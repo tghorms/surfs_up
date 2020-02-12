@@ -89,8 +89,16 @@ def tobs():
 @app.route("/api/v1.0/<start>")
 def start(start=None):
     """list of the minimum temperature, the average temperature, and the max temperature for a given start"""
-    start_date = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date >= start).group_by(Measurement.date).all()
+    start_date = session.query(Measurement.date, func.min(Measurement.tobs), func.avg(Measurement.tobs), func.max(Measurement.tobs)).filter(Measurement.date == start).group_by(Measurement.date).all()
     start_date_list = list(start_date)
+
+    # all_temps = []
+    # for tmin, tavg, tmax in start_date:
+    #         temps_dict = {}
+    #         temps_dict["tmin"] = tmin
+    #         temps_dict["tavg"] = tavg
+    #         temps_dict["tmax"] = tmax
+    #         all_temps.append(temps_dict)
     return jsonify(start_date_list)
 
 @app.route("/api/v1.0/<start>/<end>")
